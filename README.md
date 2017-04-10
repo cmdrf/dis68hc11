@@ -1,2 +1,2 @@
 # dis68hc11
-Primitive 68HC11 disassembler
+Primitive and incomplete 68HC11 disassembler. Probably of limites use at the moment.
