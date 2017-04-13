@@ -2,6 +2,7 @@
 #include <sstream>
 #include "Opcodes.h"
 #include "Mnenomic.h"
+#include "Description.h"
 #include <stdio.h>
 #include <vector>
 
@@ -17,6 +18,10 @@ std::string AddressString(uint16_t addr)
 	case 0x1006: return "DDRC";
 	case 0x1008: return "PORTD";
 	case 0x1009: return "DDRD";
+	case 0x100b: return "CFORC";
+	case 0x100c: return "OC1M";
+	case 0x100d: return "OC1D";
+	case 0x1020: return "TCTL1";
 	case 0x1028: return "SPCR";
 	case 0x1029: return "SPSR";
 	case 0x102b: return "BAUD";
@@ -93,7 +98,7 @@ void Page1(const uint8_t* data, unsigned int& pc)
 	}
 }
 
-void Page0(const uint8_t* data, unsigned int& pc)
+void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 {
 	uint8_t op = data[pc];
 	switch(op)
@@ -126,7 +131,7 @@ void Page0(const uint8_t* data, unsigned int& pc)
 	case OP_RTS:
 	case OP_SBA:
 	case OP_TSX:
-		std::cout << Mnenomic(op);
+		std::cout << Mnenomic(op) << '\t';
 		break;
 
 	// Immediate one byte:
@@ -143,36 +148,44 @@ void Page0(const uint8_t* data, unsigned int& pc)
 		std::cout << Mnenomic(op) << "\t#" << std::hex << (int)data[++pc];
 		break;
 
-	// One byte parameter:
+	// Direct:
 	case OP_ADDB_DIR:
 	case OP_ANDA_DIR:
 	case OP_ANDB_DIR:
-	case OP_BCS:
-	case OP_BEQ:
-	case OP_BGE:
-	case OP_BGT:
-	case OP_BHI:
-	case OP_BHS:
-	case OP_BLE:
-//	case OP_BLO:
-	case OP_BLS:
-	case OP_BLT:
-	case OP_BMI:
-	case OP_BNE:
-	case OP_BPL:
-	case OP_BRA:
 	case OP_CMPA_DIR:
 	case OP_LDAA_DIR:
 	case OP_LDAB_DIR:
 	case OP_ORAA_DIR:
 	case OP_ORAB_DIR:
-	case OP_STAA_IND_X:
 	case OP_STAA_DIR:
 	case OP_STAB_DIR:
 	case OP_STX_DIR:
 	case OP_SUBA_DIR:
 	case OP_SUBB_DIR:
 		std::cout << Mnenomic(op) << '\t' << std::dec << (int)data[++pc];
+		break;
+
+		// Relative (signed):
+	case OP_BCC:
+	case OP_BCS:
+	case OP_BEQ:
+	case OP_BGE:
+	case OP_BGT:
+	case OP_BHI:
+//	case OP_BHS: // Same as BCC
+//	case OP_BLO:
+	case OP_BLS:
+	case OP_BLE:
+	case OP_BLT:
+	case OP_BMI:
+	case OP_BNE:
+	case OP_BPL:
+	case OP_BRA:
+	{
+		// calculate destination address:
+		int offset = int8_t(data[++pc]);
+		std::cout << Mnenomic(op) << "\t$" << std::hex << pc + offset + 1 + epromStart;
+	}
 		break;
 
 		// Immediate two byte:
@@ -186,7 +199,7 @@ void Page0(const uint8_t* data, unsigned int& pc)
 		std::cout << Mnenomic(op) << "\t#$" << std::hex << value;
 	}
 		break;
-		// Two byte parameter:
+		// Extended (two byte) parameter:
 	case OP_CLR_EXT:
 	case OP_INC_EXT:
 	case OP_JMP_EXT:
@@ -210,6 +223,7 @@ void Page0(const uint8_t* data, unsigned int& pc)
 	case OP_LDX_IND:
 	case OP_LDAA_IND_X:
 	case OP_LDAB_IND_X:
+	case OP_STAA_IND_X:
 	case OP_SUBA_IND_X:
 	case OP_SUBB_IND_X:
 	{
@@ -251,8 +265,9 @@ void Disassemble(const uint8_t data[], unsigned int length)
 		std::cout.fill('0');
 		std::cout << std::hex << pc + epromStart << ":\t";
 
-		Page0(data, pc);
-		std::cout << std::endl;
+		uint8_t op = data[pc];
+		Page0(data, pc, epromStart);
+		std::cout << "\t; " << Description(op) << std::endl;
 		pc++;
 	}
 }

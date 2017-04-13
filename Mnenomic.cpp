@@ -198,7 +198,7 @@ const char* Mnenomic(uint8_t op)
 
 	case OP_STAB_DIR:
 	case OP_STAB_EXT:
-	case OP_STAB_IND_Y: // TODO: Y?
+	case OP_STAB_IND_X:
 		return "STAB";
 
 	case OP_STD_DIR:
@@ -254,6 +254,7 @@ const char* MnenomicPage1(uint8_t op)
 {
 	switch(op)
 	{
+	case OP_CPY_IMM: return "CPY";
 	case OP_DEY: return "DEY";
 	case OP_INY: return "INY";
 
@@ -272,6 +273,7 @@ const char* MnenomicPage1(uint8_t op)
 	case OP_LDAA_IND_Y: return "LDAA";
 
 	default:
+		std::cerr << "op: " << std::hex << int(op) << std::endl;
 		return "Unknown";
 	}
 }

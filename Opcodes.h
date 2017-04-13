@@ -3,6 +3,8 @@
 
 enum Opcodes
 {
+	OP_ABA = 0x1b,
+
 	OP_ADDA_IMM = 0x8b,
 	OP_ADDA_DIR = 0x9b,
 	OP_ADDA_EXT = 0xbb,
@@ -33,6 +35,7 @@ enum Opcodes
 	OP_ASRA = 0x47,
 	OP_ASRB = 0x57,
 
+	OP_BCC = 0x24,
 	OP_BCS = 0x25,
 	OP_BEQ = 0x27,
 	OP_BGE = 0x2c,
@@ -41,13 +44,17 @@ enum Opcodes
 	OP_BHS = 0x24,
 
 	OP_BLE = 0x2f,
-	OP_BLO = 0x25,
+	OP_BLO = 0x25, ///< Branch if Lower, same as BCS
 	OP_BLS = 0x23,
 	OP_BLT = 0x2d,
 	OP_BMI = 0x2b,
 	OP_BNE = 0x26,
 	OP_BPL = 0x2a,
 	OP_BRA = 0x20,
+	OP_BRN = 0x21, ///< Branch Never
+	OP_BRSET_DIR = 0x12, ///< Branch if Bit(s) Set, direct
+	OP_BRSET_IND_X = 0x1e, ///< Branch if Bit(s) Set, indirect
+	OP_BSR = 0x8d, ///< Branch to Subroutine
 
 	OP_CLI = 0x0e,
 	OP_CLRA = 0x4f,
@@ -167,7 +174,7 @@ enum Opcodes
 
 	OP_STAB_DIR = 0xd7,
 	OP_STAB_EXT = 0xf7,
-	OP_STAB_IND_Y = 0xe7,
+	OP_STAB_IND_X = 0xe7,
 
 	OP_STD_DIR = 0xdd,
 	OP_STD_EXT = 0xfd,
