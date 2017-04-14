@@ -6,6 +6,21 @@ const char* Mnenomic(uint8_t op)
 {
 	switch(op)
 	{
+	case OP_ABA: return "ABA";
+	case OP_ABX: return "ABX";
+
+	case OP_ADCA_DIR:
+	case OP_ADCA_IMM:
+	case OP_ADCA_EXT:
+	case OP_ADCA_IND_X:
+		return "ADCA";
+
+	case OP_ADCB_DIR:
+	case OP_ADCB_IMM:
+	case OP_ADCB_EXT:
+	case OP_ADCB_IND_X:
+		return "ADCB";
+
 	case OP_ADDA_IMM:
 	case OP_ADDA_DIR:
 	case OP_ADDA_EXT:
@@ -17,6 +32,12 @@ const char* Mnenomic(uint8_t op)
 	case OP_ADDB_EXT:
 	case OP_ADDB_IND_X:
 		return "ADDB";
+
+	case OP_ADDD_IMM:
+	case OP_ADDD_DIR:
+	case OP_ADDD_EXT:
+	case OP_ADDD_IND_X:
+		return "ADDD";
 
 	case OP_ANDA_IMM:
 	case OP_ANDA_DIR:
@@ -58,6 +79,8 @@ const char* Mnenomic(uint8_t op)
 	case OP_BNE: return "BNE";
 	case OP_BPL: return "BPL";
 	case OP_BRA: return "BRA";
+	case OP_BVC: return "BVC";
+	case OP_BVS: return "BVS";
 
 	case OP_CMPA_IMM:
 	case OP_CMPA_DIR:
@@ -81,13 +104,17 @@ const char* Mnenomic(uint8_t op)
 		return "CMPB";
 
 	case OP_CPX_IMM:
+	case OP_CPX_DIR:
+	case OP_CPX_IND:
 		return "CPX";
 
 	case OP_DECA: return "DECA";
 	case OP_DECB: return "DECB";
 	case OP_DES: return "DES";
 	case OP_DEX: return "DEX";
+	case OP_FDIV: return "FDIV";
 
+	case OP_IDIV: return "IDIV";
 	case OP_INCA: return "INCA";
 	case OP_INCB: return "INCB";
 	case OP_INS: return "INS";
@@ -128,6 +155,12 @@ const char* Mnenomic(uint8_t op)
 	case OP_LDAB_EXT:
 	case OP_LDAB_IND_X:
 		return "LDAB";
+
+	case OP_LDD_IMM:
+	case OP_LDD_DIR:
+	case OP_LDD_EXT:
+	case OP_LDD_IND_X:
+		return "LDD";
 
 	case OP_LDS_IMM:
 	case OP_LDS_DIR:
@@ -171,8 +204,12 @@ const char* Mnenomic(uint8_t op)
 	case OP_PSHB: return "PSHB";
 	case OP_PSHX: return "PSHX";
 	case OP_PULA: return "PULA";
-	case OP_PULB: return "PULY";
+	case OP_PULB: return "PULB";
 	case OP_PULX: return "PULX";
+	case OP_ROLA: return "ROLA";
+	case OP_ROLB: return "ROLB";
+	case OP_RORA: return "RORA";
+	case OP_RORB: return "RORB";
 	case OP_RTS: return "RTS";
 
 	case OP_SBA: return "SBA";
@@ -254,6 +291,7 @@ const char* MnenomicPage1(uint8_t op)
 {
 	switch(op)
 	{
+	case OP_ABY: return "ABY";
 	case OP_CPY_IMM: return "CPY";
 	case OP_DEY: return "DEY";
 	case OP_INY: return "INY";

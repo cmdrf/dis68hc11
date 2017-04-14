@@ -18,10 +18,12 @@ std::string AddressString(uint16_t addr)
 	case 0x1006: return "DDRC";
 	case 0x1008: return "PORTD";
 	case 0x1009: return "DDRD";
+	case 0x100a: return "PORTE";
 	case 0x100b: return "CFORC";
 	case 0x100c: return "OC1M";
 	case 0x100d: return "OC1D";
 	case 0x1020: return "TCTL1";
+	case 0x1026: return "PACTL";
 	case 0x1028: return "SPCR";
 	case 0x1029: return "SPSR";
 	case 0x102b: return "BAUD";
@@ -104,6 +106,8 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	switch(op)
 	{
 	// No parameter:
+	case OP_ABA:
+	case OP_ABX:
 	case OP_ASLA:
 	case OP_ASLB:
 	case OP_ASLD:
@@ -117,6 +121,11 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	case OP_DECB:
 	case OP_DES:
 	case OP_DEX:
+	case OP_FDIV:
+	case OP_IDIV:
+	case OP_INCA:
+	case OP_INCB:
+	case OP_INS:
 	case OP_INX:
 	case OP_LSRA:
 	case OP_LSRB:
@@ -128,16 +137,26 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	case OP_PULA:
 	case OP_PULB:
 	case OP_PULX:
+	case OP_ROLA:
+	case OP_ROLB:
+	case OP_RORA:
+	case OP_RORB:
 	case OP_RTS:
 	case OP_SBA:
+	case OP_SEI:
+	case OP_TAB:
+	case OP_TBA:
 	case OP_TSX:
+	case OP_XGDX:
 		std::cout << Mnenomic(op) << '\t';
 		break;
 
 	// Immediate one byte:
 	case OP_ADDA_IMM:
 	case OP_ADDB_IMM:
+	case OP_ADDD_IMM:
 	case OP_ANDA_IMM:
+	case OP_ANDB_IMM:
 	case OP_CMPA_IMM:
 	case OP_CMPB_IMM:
 	case OP_EORA_IMM:
@@ -145,20 +164,30 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	case OP_LDAA_IMM:
 	case OP_LDAB_IMM:
 	case OP_ORAA_IMM:
-		std::cout << Mnenomic(op) << "\t#" << std::hex << (int)data[++pc];
+	case OP_SUBA_IMM:
+	case OP_SUBB_IMM:
+		std::cout << Mnenomic(op) << "\t#" << std::dec << (int)data[++pc];
 		break;
 
 	// Direct:
+	case OP_ADDA_DIR:
 	case OP_ADDB_DIR:
+	case OP_ADDD_DIR:
 	case OP_ANDA_DIR:
 	case OP_ANDB_DIR:
 	case OP_CMPA_DIR:
+	case OP_CMPB_DIR:
+	case OP_CPX_DIR:
+	case OP_JSR_DIR:
 	case OP_LDAA_DIR:
 	case OP_LDAB_DIR:
+	case OP_LDD_DIR:
+	case OP_LDX_DIR:
 	case OP_ORAA_DIR:
 	case OP_ORAB_DIR:
 	case OP_STAA_DIR:
 	case OP_STAB_DIR:
+	case OP_STD_DIR:
 	case OP_STX_DIR:
 	case OP_SUBA_DIR:
 	case OP_SUBB_DIR:
@@ -181,6 +210,8 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	case OP_BNE:
 	case OP_BPL:
 	case OP_BRA:
+	case OP_BVC:
+	case OP_BVS:
 	{
 		// calculate destination address:
 		int offset = int8_t(data[++pc]);
@@ -189,6 +220,7 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 		break;
 
 		// Immediate two byte:
+	case OP_LDD_IMM:
 	case OP_LDX_IMM:
 	case OP_LDS_IMM:
 	case OP_CPX_IMM:
@@ -208,6 +240,7 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	case OP_LDX_EXT:
 	case OP_LSR_EXT:
 	case OP_STAA_EXT:
+	case OP_STAB_EXT:
 		{
 			uint8_t p0 = data[++pc];
 			uint8_t p1 = data[++pc];
@@ -217,22 +250,27 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	break;
 
 		// Indexed:
+	case OP_ADCB_IND_X:
 	case OP_CLR_IND:
 	case OP_CMPA_IND_X:
 	case OP_INC_IND_X:
+	case OP_JMP_IND_X:
 	case OP_LDX_IND:
 	case OP_LDAA_IND_X:
 	case OP_LDAB_IND_X:
+	case OP_ORAA_IND_X:
+	case OP_ORAB_IND_X:
 	case OP_STAA_IND_X:
+	case OP_STAB_IND_X:
 	case OP_SUBA_IND_X:
 	case OP_SUBB_IND_X:
 	{
 		std::cout << Mnenomic(op);
 		uint8_t p = data[++pc];
 		if(p != 0)
-			std::cout << '\t' << std::dec << int(p) << ",Y";
+			std::cout << '\t' << std::dec << int(p) << ",X";
 		else
-			std::cout << "\tY";
+			std::cout << "\tX";
 	}
 		break;
 
@@ -252,12 +290,10 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	}
 }
 
-void Disassemble(const uint8_t data[], unsigned int length)
+void Disassemble(const uint8_t data[], unsigned int length, uint16_t startAddress)
 {
 	unsigned int epromStart = 0xffff - length + 1;
-	uint8_t fffe = data[length - 2];
-	uint8_t ffff = data[length - 1];
-	unsigned int pc = ((uint16_t(fffe) << 8) | ffff) - epromStart;
+	unsigned int pc = startAddress - epromStart;
 	while(pc < length)
 	{
 		std::cout << "$";
@@ -272,14 +308,33 @@ void Disassemble(const uint8_t data[], unsigned int length)
 	}
 }
 
+void Disassemble(const uint8_t data[], unsigned int length)
+{
+	uint8_t fffe = data[length - 2];
+	uint8_t ffff = data[length - 1];
+	uint16_t startAddress = ((uint16_t(fffe) << 8) | ffff);
+	Disassemble(data, length, startAddress);
+}
+
 int main(int argc, char *argv[])
 {
-	if(argc != 2)
+	if(argc < 2 || argc > 4)
 	{
-		std::cerr << "Usage: dis68hc11 <binary file>\n";
+		std::cerr << "Usage: dis68hc11 [-s <start address>] <binary file>\n";
 		return EXIT_FAILURE;
 	}
-	FILE* inFile = fopen(argv[1], "rb");
+
+	long startAddress = -1;
+	const char* filename = NULL;
+	if(!strcmp("-s", argv[1]))
+	{
+		startAddress = strtol(argv[2], NULL, 16);
+		filename = argv[3];
+	}
+	else
+		filename = argv[1];
+
+	FILE* inFile = fopen(filename, "rb");
 	if(!inFile)
 	{
 		std::cerr << "Could not open file\n";
@@ -293,7 +348,10 @@ int main(int argc, char *argv[])
 
 	try
 	{
-		Disassemble(fileData.data(), fileData.size());
+		if(startAddress >= 0)
+			Disassemble(fileData.data(), fileData.size(), startAddress);
+		else
+			Disassemble(fileData.data(), fileData.size());
 	}
 	catch (std::exception& e)
 	{

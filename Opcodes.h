@@ -4,6 +4,17 @@
 enum Opcodes
 {
 	OP_ABA = 0x1b,
+	OP_ABX = 0x3a,
+
+	OP_ADCA_DIR = 0x89,
+	OP_ADCA_IMM = 0x99,
+	OP_ADCA_EXT = 0xb9,
+	OP_ADCA_IND_X = 0xa9,
+
+	OP_ADCB_DIR = 0xc9,
+	OP_ADCB_IMM = 0xd9,
+	OP_ADCB_EXT = 0xf9,
+	OP_ADCB_IND_X = 0xe9,
 
 	OP_ADDA_IMM = 0x8b,
 	OP_ADDA_DIR = 0x9b,
@@ -14,6 +25,11 @@ enum Opcodes
 	OP_ADDB_DIR = 0xdb,
 	OP_ADDB_EXT = 0xfb,
 	OP_ADDB_IND_X = 0xeb,
+
+	OP_ADDD_IMM = 0xc3,
+	OP_ADDD_DIR = 0xd3,
+	OP_ADDD_EXT = 0xf3,
+	OP_ADDD_IND_X = 0xe3,
 
 	OP_ANDA_IMM = 0x84,
 	OP_ANDA_DIR = 0x94,
@@ -55,6 +71,8 @@ enum Opcodes
 	OP_BRSET_DIR = 0x12, ///< Branch if Bit(s) Set, direct
 	OP_BRSET_IND_X = 0x1e, ///< Branch if Bit(s) Set, indirect
 	OP_BSR = 0x8d, ///< Branch to Subroutine
+	OP_BVC = 0x28,
+	OP_BVS = 0x29,
 
 	OP_CLI = 0x0e,
 	OP_CLRA = 0x4f,
@@ -93,6 +111,8 @@ enum Opcodes
 	OP_EORB_EXT = 0xf8,
 	OP_EORB_IND_X = 0xe8,
 
+	OP_FDIV = 0x03,
+	OP_IDIV = 0x02,
 	OP_INC_EXT = 0x7c,
 	OP_INC_IND_X = 0x6c,
 	OP_INCA = 0x4c,
@@ -116,6 +136,11 @@ enum Opcodes
 	OP_LDAB_DIR = 0xd6,
 	OP_LDAB_EXT = 0xbf,
 	OP_LDAB_IND_X = 0xe6,
+
+	OP_LDD_IMM = 0xcc,
+	OP_LDD_DIR = 0xdc,
+	OP_LDD_EXT = 0xfc,
+	OP_LDD_IND_X = 0xec,
 
 	OP_LDS_IMM = 0x8e,
 	OP_LDS_DIR = 0x9e,
@@ -152,6 +177,15 @@ enum Opcodes
 	OP_PULB = 0x33,
 	OP_PULX = 0x38,
 
+	OP_ROL_EXT = 0x79,
+	OP_ROL_IND = 0x69,
+	OP_ROLA = 0x49,
+	OP_ROLB = 0x59,
+	OP_ROR_EXT = 0x76,
+	OP_ROR_IND = 0x66,
+	OP_RORA = 0x46,
+	OP_RORB = 0x56,
+	OP_RTI = 0x3b,
 	OP_RTS = 0x39,
 
 	OP_SBA = 0x10,
@@ -218,6 +252,7 @@ enum Opcodes
 	OP_XGDX = 0x8f,
 
 	// Page 1:
+	OP_ABY = 0x3a,
 	OP_CPY_IMM = 0x8c,
 	OP_DEY = 0x09,
 
