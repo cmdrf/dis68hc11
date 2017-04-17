@@ -108,6 +108,7 @@ const char* Mnenomic(uint8_t op)
 	case OP_CPX_IND:
 		return "CPX";
 
+	case OP_DAA: return "DAA";
 	case OP_DECA: return "DECA";
 	case OP_DECB: return "DECB";
 	case OP_DES: return "DES";

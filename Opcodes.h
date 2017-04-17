@@ -97,6 +97,7 @@ enum Opcodes
 	OP_CPX_EXT = 0xbc,
 	OP_CPX_IND = 0xac,
 
+	OP_DAA = 0x19,
 	OP_DECA = 0x4a,
 	OP_DECB = 0x5a,
 	OP_DES = 0x34,
@@ -134,7 +135,7 @@ enum Opcodes
 
 	OP_LDAB_IMM = 0xc6,
 	OP_LDAB_DIR = 0xd6,
-	OP_LDAB_EXT = 0xbf,
+	OP_LDAB_EXT = 0xf6,
 	OP_LDAB_IND_X = 0xe6,
 
 	OP_LDD_IMM = 0xcc,

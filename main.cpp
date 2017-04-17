@@ -117,6 +117,7 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	case OP_CLRA:
 	case OP_CLRB:
 	case OP_CLV:
+	case OP_DAA:
 	case OP_DECA:
 	case OP_DECB:
 	case OP_DES:
@@ -220,10 +221,10 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 		break;
 
 		// Immediate two byte:
+	case OP_CPX_IMM:
 	case OP_LDD_IMM:
 	case OP_LDX_IMM:
 	case OP_LDS_IMM:
-	case OP_CPX_IMM:
 	{
 		uint8_t p0 = data[++pc];
 		uint8_t p1 = data[++pc];
@@ -237,6 +238,7 @@ void Page0(const uint8_t* data, unsigned int& pc, unsigned int epromStart)
 	case OP_JMP_EXT:
 	case OP_JSR_EXT:
 	case OP_LDAA_EXT:
+	case OP_LDAB_EXT:
 	case OP_LDX_EXT:
 	case OP_LSR_EXT:
 	case OP_STAA_EXT:
