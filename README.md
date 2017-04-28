@@ -3,9 +3,10 @@ Simple 68HC11 disassembler.
 
 ## Compiling
 
-This project is built with CMake. Inside the build directory, do:
+This project is built with CMake. After downloading the source code, navigate to the source directory and run:
 
     mkdir build
+    cd build
     cmake ..
     make
     
